@@ -9,10 +9,19 @@
 </p>
 
 <p align="center">
-  <img src="docs/calendar.png" width="300" alt="The Calendar Clock drop-down">
+  <img src="docs/calendar.png" width="640" alt="Calendar Clock open below its menu bar icon: the menu bar clock shows 12:19, the drop-down shows 12:19:17 above this month's calendar">
 </p>
 
-I wanted to see the time with seconds now and then, without seconds ticking in the menu bar all day or another icon taking up space. Calendar Clock replaces a menu bar calendar: click its icon and you get the month **plus a live clock with seconds**.
+## Why I made it
+
+There were two small things I wanted from my Mac that it just doesn't do:
+
+1. **A calendar in the menu bar.** Click the clock on Windows and a calendar pops up; it's been that way for many versions. macOS still has no calendar that drops down from the menu bar.
+2. **Seconds when I want them.** The macOS menu bar clock can show seconds all the time or not at all. I wanted a clean menu bar with no seconds ticking away, but the seconds there the moment I wanted them.
+
+Calendar Clock does both in one click. Click its icon and you get this month's calendar, with a live clock showing the seconds right at the top. Click away and it's gone.
+
+It suits me perfectly, and I hope someone else finds it useful too.
 
 ## Features
 
@@ -26,9 +35,9 @@ I wanted to see the time with seconds now and then, without seconds ticking in t
 - **Open at Login** from the ⋯ menu.
 
 <p align="center">
-  <img src="docs/month-chooser.png" width="300" alt="Month picker">
-  &nbsp;&nbsp;
-  <img src="docs/menu-bar-icons.png" width="300" alt="Menu bar icon styles">
+  <img src="docs/month-chooser.png" width="410" alt="The month picker">
+  &nbsp;
+  <img src="docs/menu-bar-icons.png" width="410" alt="The menu bar icon styles">
 </p>
 
 ## Lightweight by design
