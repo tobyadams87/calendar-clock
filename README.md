@@ -12,6 +12,10 @@
   <img src="docs/calendar.png" width="640" alt="Calendar Clock open below its menu bar icon: the menu bar clock shows 12:19, the drop-down shows 12:19:17 above this month's calendar">
 </p>
 
+<p align="center">
+  <a href="https://github.com/tobyadams87/calendar-clock/releases/latest"><b>⬇︎ Download Calendar Clock</b></a> for Apple Silicon Macs · <a href="#install">How to install</a>
+</p>
+
 ## Why I made it
 
 There were two small things I wanted from my Mac that it just doesn't do:
@@ -52,9 +56,33 @@ Calendar Clock is a single Swift file built with plain AppKit, without SwiftUI:
 
 - An Apple Silicon Mac
 - macOS 14 or later (developed and tested on macOS 27; Liquid Glass needs macOS 26 or later)
-- Apple's free Command Line Tools to build it (full Xcode isn't needed)
 
 ## Install
+
+### Download (easiest)
+
+1. Download **CalendarClock-1.0.0.dmg** from the [latest release](https://github.com/tobyadams87/calendar-clock/releases/latest).
+2. Open it and drag **Calendar Clock** into **Applications**.
+3. Open Calendar Clock from Applications. The first time, macOS says it can't check the app for malicious software. That's because it isn't signed with a paid Apple Developer account, not because anything is wrong with it. To allow it once:
+   - Click **Done** on the warning.
+   - Go to **System Settings → Privacy & Security**, scroll down to the message about Calendar Clock and click **Open Anyway**.
+   - Confirm with your password or Touch ID.
+
+After that it opens normally. Its icon appears in the menu bar; choose **⋯ → Open at Login** to have it start with your Mac.
+
+<details>
+<summary>Prefer Terminal?</summary>
+
+After dragging it into Applications, this removes the "downloaded from the internet" flag so the warning doesn't appear:
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/Calendar Clock.app"
+```
+</details>
+
+### Build it yourself
+
+If you'd rather build from the source, you only need Apple's free Command Line Tools (full Xcode isn't needed):
 
 ```bash
 xcode-select --install        # only if you don't have the Command Line Tools yet
@@ -63,9 +91,9 @@ cd calendar-clock
 zsh build.sh
 ```
 
-`build.sh` compiles the app, installs it as `~/Applications/Calendar Clock.app` and launches it. Because you built it on your own Mac, it opens without Gatekeeper warnings. To have it start when you log in, choose **⋯ → Open at Login**.
+`build.sh` compiles the app, installs it as `~/Applications/Calendar Clock.app` and launches it. Because you built it on your own Mac, it opens without any warning. To update, run `git pull` and `zsh build.sh` again; your settings and permissions are kept.
 
-To update, run `git pull` and `zsh build.sh` again. Your settings and permissions are kept.
+`zsh build.sh release` makes the downloadable disk image in `dist/`.
 
 ## Permissions
 
@@ -78,7 +106,7 @@ Calendar Clock never reads, creates or changes your events. If you'd rather not 
 
 ## Uninstall
 
-Turn off **⋯ → Open at Login**, quit the app, then delete `~/Applications/Calendar Clock.app`.
+Turn off **⋯ → Open at Login**, quit the app (**⋯ → Quit Calendar Clock**), then move **Calendar Clock** to the Bin from Applications (or from `~/Applications` if you built it yourself).
 
 ## Credits
 
