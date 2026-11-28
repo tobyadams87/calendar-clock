@@ -38,7 +38,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem.autosaveName = "CalendarClock"   // remembers a ⌘-dragged position
-        if let button = statusItem.button {
+        if #available(macOS 27.0, *) {
+            // macOS 27 opens and closes the panel through "expanded interface" sessions, which keep the menu bar
+            // chip highlighted while the panel is open (setting the highlight from code no longer shows) and
+            // let the item take part in menu bar keyboard navigation.
+            statusItem.expandedInterfaceDelegate = self
+        } else if let button = statusItem.button {
             button.target = self
             button.action = #selector(toggle)
         }
@@ -69,25 +74,51 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let panel = CalendarPanel(anchor: anchor) { [weak self] in self?.close() }
         self.panel = panel
         panel.makeKeyAndOrderFront(nil)
-        button.highlight(true)
+        if #unavailable(macOS 27.0) {
+            // Before macOS 27: this runs while the button is still tracking the click, and the button
+            // un-highlights itself once that loop ends. Work queued for the default run-loop mode runs after it.
+            RunLoop.main.perform(inModes: [.default]) { [weak self] in
+                if self?.panel != nil { button.highlight(true) }
+            }
+        }
         clickMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) {
             [weak self] _ in self?.close()
         }
     }
 
+    /// Closes the panel for any reason: Escape, a click elsewhere, clicking a day, or the icon again.
     private func close() {
+        if #available(macOS 27.0, *) { statusItem.expandedInterfaceSession?.cancel() }   // un-highlights the chip
+        tearDownPanel()
+    }
+
+    private func tearDownPanel() {
         guard let panel else { return }
         self.panel = nil
         if let clickMonitor { NSEvent.removeMonitor(clickMonitor) }
         clickMonitor = nil
         panel.orderOut(nil)
         panel.tearDown()
-        statusItem.button?.highlight(false)
+        if #unavailable(macOS 27.0) { statusItem.button?.highlight(false) }
         lastClosed = Date()
         // Once the views have been freed, hand the freed pages back to macOS.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             malloc_zone_pressure_relief(nil, 0)
         }
+    }
+}
+
+@available(macOS 27.0, *)
+extension AppDelegate: NSStatusItemExpandedInterfaceDelegate {
+    func statusItem(_ statusItem: NSStatusItem, didBegin session: NSStatusItemExpandedInterfaceSession) {
+        // The click that closed the panel (by taking focus away) shouldn't reopen it.
+        if panel != nil { return }
+        if Date().timeIntervalSince(lastClosed) < 0.3 { session.cancel(); return }
+        open()
+    }
+
+    func statusItemDidEndExpandedInterfaceSession(_ statusItem: NSStatusItem, animated: Bool) {
+        tearDownPanel()
     }
 }
 

@@ -7,7 +7,7 @@ set -e
 cd "$(dirname "$0")"
 
 BUNDLE_ID="${BUNDLE_ID:-io.github.tobyadams87.calendarclock}"
-VERSION="1.0.0"
+VERSION="1.0.1"
 if [[ "$1" == "release" ]]; then
   # Assembled outside iCloud Drive: its file metadata makes code signing fail.
   STAGE="$(mktemp -d)/Calendar Clock"

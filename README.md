@@ -61,7 +61,7 @@ Calendar Clock is a single Swift file built with plain AppKit, without SwiftUI:
 
 ### Download (easiest)
 
-1. Download **CalendarClock-1.0.0.dmg** from the [latest release](https://github.com/tobyadams87/calendar-clock/releases/latest).
+1. Download the **CalendarClock .dmg** file from the [latest release](https://github.com/tobyadams87/calendar-clock/releases/latest).
 2. Open it and drag **Calendar Clock** into **Applications**.
 3. Open Calendar Clock from Applications. The first time, macOS says it can't check the app for malicious software. That's because it isn't signed with a paid Apple Developer account, not because anything is wrong with it. To allow it once:
    - Click **Done** on the warning.
